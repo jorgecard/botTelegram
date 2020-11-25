@@ -1,0 +1,1 @@
+El canal se llama ```Danitic_bot``` y se puede encontrar en Telegram
