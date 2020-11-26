@@ -16,9 +16,8 @@ Para el desarrollo se ha utilizado:
 1. Crear un bot a través del **Bot Father**. No asignará un token para la API de telegram que integraremos en nuestro proyecto.
 2. Debemos instalar siempre en primer lugar la librería que vamos a utilizar. En mi caso, yo lo he hecho a través de la terminal de VS Code.
 
-```sh
-pip install python-telegram-bot
-``` 
+    pip install python-telegram-bot
+
 3. Desde telegram buscaremos el canal y nos conectaremos a él para realizar las pruebas
 
 # Canal de pruebas
