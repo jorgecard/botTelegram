@@ -25,3 +25,13 @@ pip install python-telegram-bot
 # Canal de pruebas
 
 El canal se llama ```Danitic_bot``` y se puede encontrar en Telegram
+
+- Aditya: https://web.telegram.org/#/im?p=@aditya931_bot
+- Edson: https://web.telegram.org/#/im?p=@Apzzunbot
+- Jose Luis (@hyukilbot): https://web.telegram.org/#/im?p=@Apzzunbot
+- Christian (@pascubot): https://web.telegram.org/#/im?p=@pascubot
+- Miguel Angel:https://web.telegram.org/#/im?p=@sgvsegbot
+- Leo: https://web.telegram.org/#/im?p=@LeombBot
+- Mariano: https://web.telegram.org/#/im?p=@uver_bot
+
+
