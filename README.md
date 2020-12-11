@@ -34,4 +34,24 @@ El canal se llama ```Danitic_bot``` y se puede encontrar en Telegram
 - Leo: https://web.telegram.org/#/im?p=@LeombBot
 - Mariano: https://web.telegram.org/#/im?p=@uver_bot
 
+# Poner estilos
+
+Actualizar las respuestas:
+
+```python
+update.message.reply_text('*_bold and italic_*', parse_mode='MarkdownV2')
+```
+Ejemplos:
+
+```
+*bold \*text*
+_italic \*text_
+__underline__
+~strikethrough~
+*bold _italic bold ~italic bold strikethrough~ __underline italic bold___ bold*
+[inline URL](http://www.example.com/)
+[inline mention of a user](tg://user?id=123456789)
+`inline fixed-width code`
+```
+
 
