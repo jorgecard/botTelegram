@@ -18,6 +18,7 @@ bot.
 """
 
 import logging
+import codecs
 
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
@@ -34,19 +35,41 @@ logger = logging.getLogger(__name__)
 # context. Error handlers also receive the raised TelegramError object in error.
 def start(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
+    name = update.message.from_user.username
+    update.message.reply_text(f"Hola {name}, soc el *bot de TIC de l\'IES RL* \U0001F3EB. Pots demanar el que vulguis. ",parse_mode='Markdown')
     update.message.reply_text(
-        'Hola! soc el bot del IES RL \U0001F3EB. Pots demanar el que vulguis. '
         'Què vols saber:\n\n'
-        'Quins /estudis s\'imparteixen al centre?\n'
-        'Quin és el /telefon del centre\n'
-        'On ens /trobam?\n'
+        '1. Quins /estudis s\'imparteixen al centre?\n'
+        '2. Quines matèries o estudis de /tic puc fer a l\'institut?\n'
+        '3. Quin és el /telefon del centre o /correuelectronic per a contactar\n'
+        '4. On ens /trobam?\n'
+        '5. /blogs dels alumnes AICLE\n\n'
+        '![Foto de l\'institut\'](https://www.casaljoanalcover.es/wp-content/uploads/2014/03/1195690728_f.jpg)'
+        ,parse_mode='Markdown'
+        
+        
+    )
+def correuelectronic(update: Update, context: CallbackContext) -> None:
+    
+    update.message.reply_text(    
+        'iesramonllull@educaib.eu'
+    )
+
+def peli(update: Update, context: CallbackContext) -> None:
+    """Send a message when the command /start is issued."""
+    update.message.reply_text(
+        'Mi chiste'
     )
 
 
+def echo(update: Update, context: CallbackContext) -> None:
+    """Echo the user message."""
+    update.message.reply_text(update.message.text)
 
-def help_command(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /help is issued."""
-    update.message.reply_text('Para ver la carta utiliza el comando /carta')
+def telegram(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(
+        'Telegram es una aplicación de mensajería instantánea de código abierto, segura, privada, multi-plataforma, rápida, basada en la nube y gratuita'
+    )
 
 def telefon(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /help is issued."""
@@ -82,7 +105,12 @@ def batxillerat(update: Update, context: CallbackContext) -> None:
         '\u2705 Modalitat de ciències socials /batxCCSS\n '    
         '\n\nTorna al principi amb /start\n\n'
     )
+
+def tic(update: Update, context: CallbackContext) -> None:
+    """Send a message when the command /start is issued."""
     
+    f = codecs.open('info/tic.md', encoding='utf-8')     
+    update.message.reply_text(f.read(),parse_mode='Markdown')
 
 def batxCIEN(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
@@ -105,15 +133,15 @@ def batxCIEN(update: Update, context: CallbackContext) -> None:
         '\U0001F4D8 Anatomia aplicada (3)\n '
         '\U0001F4D8 Religió(3)\n '
     )    
-
-
+  
 
 
 def fpbasica(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
     update.message.reply_text(
-        'Aquests estudis de /cicles formatius es fan en horari d\'horabaixa\n\n '
-        '1r curs\n\n'
+        'Són cicles formatius d\'una durada de **2 anys acadèmics** destinats a persones que no han finalitzat l\'ESO i vol prosseguir els seus estudis cap a a un camp de la Formació Professional.\n\n '
+        'Aquests estudis de /cicles formatius es fan en *horari d\'horabaixa*\n\n '
+        '*1r curs*\n\n'
         '\U0001F4D7 Ofimàtica i arxiu de documents 8\n '
         '\U0001F4D7 Muntatge i manteniment de sistemes i components informàtics 10\n '
         '\U0001F4D7 Ciències aplicades I 5\n '
@@ -121,7 +149,7 @@ def fpbasica(update: Update, context: CallbackContext) -> None:
         '\U0001F4D7 Tutoria 2\n\n'
         'Total hores setmanals 30\n\n'
 
-        '2n curs\n\n'
+        '*2n curs*\n\n'
         '\U0001F4D8 Operacions per la configuració i exportació 8\n '
         '\U0001F4D8 Instalació i mantenimet de xarxes 7\n '
         '\U0001F4D8 Ciències aplicades II 6\n '
@@ -129,23 +157,49 @@ def fpbasica(update: Update, context: CallbackContext) -> None:
         '\U0001F4D8 Tutoria 2\n\n '
         'Total hores setmanals 30\n '
         '\n\nTorna al principi amb /start\n\n'
-
+        ,parse_mode='Markdown'
     )
 
 def ti1(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(
         'Temari de Tecnologia industrial I\n\n '
-        'Circuits i sistemes lògics\n'
-        'Control i programació de sistemes automàtics\n'
-        'Sistemes automàtics\n'
-        'Principis de màquines\n'
-        'Materials\n'
-        'Aplicacions amb robòtica i arduino\n'
+        '\U0001F4D8 Circuits i sistemes lògics\n'
+        '\U0001F4D8 Control i programació de sistemes automàtics\n'
+        '\U0001F4D8 Sistemes automàtics\n'
+        '\U0001F4D8 Principis de màquines\n'
+        '\U0001F4D8 Materials\n'
+        '\U0001F4D8 Aplicacions amb robòtica i arduino\n'
     )
 
-def echo(update: Update, context: CallbackContext) -> None:
-    """Echo the user message."""
-    update.message.reply_text(update.message.text)
+def tic4eso(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(
+        'Temari de *TIC de 4t d\'ESO*\n\n '
+        '\U0001F4D8 Sistemes operatius\n'
+        '\U0001F4D8 Productivitat i eines col·laboratives amb /EinesGoogle\n'
+        '\U0001F4D8 Ofimàtica amb /Libreoffice i /GoogleDocs i /GoogleSheets\n'
+        '\U0001F4D8 Disseny vectorial amb /inkscape\n'
+        '\U0001F4D8 Xarxes informàtiques\n'
+        '\U0001F4D8 Introducció a la programació\n'
+        ,parse_mode='Markdown'
+    )
+
+def programacion(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text(
+        '```python\n'
+        's = "Python syntax highlighting"\n'
+        'print s\n'
+        '```\n'
+        ,parse_mode='Markdown'
+    )
+
+def blogs(update: Update, context: CallbackContext) -> None:
+    f = codecs.open('info/blogs.md', encoding='utf-8') 
+    update.message.reply_text(f.read(),parse_mode='Markdown')
+        
+    
+
+
+
 
 
 
@@ -162,7 +216,9 @@ def main():
 
     # on different commands - answer in Telegram
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("help", help_command))
+    dispatcher.add_handler(CommandHandler("peli", peli))
+    dispatcher.add_handler(CommandHandler("telegram", telegram))
+    
     dispatcher.add_handler(CommandHandler("telefon", telefon))
     dispatcher.add_handler(CommandHandler("trobam", trobam))
     dispatcher.add_handler(CommandHandler("estudis", estudis))
@@ -171,11 +227,16 @@ def main():
     dispatcher.add_handler(CommandHandler("batxillerat", batxillerat))
     dispatcher.add_handler(CommandHandler("batxCIEN", batxCIEN))
     dispatcher.add_handler(CommandHandler("ti1", ti1))
-    
-    
+    dispatcher.add_handler(CommandHandler("tic", tic))
+    dispatcher.add_handler(CommandHandler("tic4eso", tic4eso))
+    dispatcher.add_handler(CommandHandler("programacion", programacion))
+    dispatcher.add_handler(CommandHandler("blogs", blogs))
+    dispatcher.add_handler(CommandHandler("correuelectronic", correuelectronic))
     
 
 
+  
+    
     # on noncommand i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
 
