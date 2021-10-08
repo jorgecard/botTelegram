@@ -108,7 +108,7 @@ def batxillerat(update: Update, context: CallbackContext) -> None:
 
 def tic(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
-    update.message.reply_text('https://www.youtube.com/channel/UCCKyd2Q01QBeTGtAt4E8WjA')
+    update.message.reply_text('https://youtu.be/LXdOqeuG438')
     #f = codecs.open('info/tic.md', encoding='utf-8')     
     #update.message.reply_text(f.read(),parse_mode='Markdown')
 
