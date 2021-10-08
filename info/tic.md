@@ -2,7 +2,7 @@ Al *departament de tecnologia* moltes matèries relacionades amb les TIC (tecnol
 
 *A ESO i batxillerat*:
 
-- 📗 TIC de 4t d\'ESO /TIC4ESO
+- 📗 TIC de 4t d\'ESO /tic4eso
 - 📗 TIC de 1r de batxillerat /TIC1BAT
 - 📗 TIC de 2n de batxillerat /TIC2BAT
 
