@@ -1,5 +1,7 @@
 Al *departament de tecnologia* moltes matèries relacionades amb les TIC (tecnologies de la informació i la comunicació).
 
+Canal de TIC: https://www.youtube.com/channel/UCCKyd2Q01QBeTGtAt4E8WjA
+
 *A ESO i batxillerat*:
 
 - 📗 TIC de 4t d\'ESO /tic4eso
