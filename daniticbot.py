@@ -127,14 +127,14 @@ def batxillerat(update: Update, context: CallbackContext) -> None:
 def tic(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
     # update.message.reply_text('https://youtu.be/LXdOqeuG438')
-    f = codecs.open('info/tic.md', encoding='utf-8')
+    f = codecs.open('botTelegram/info/tic.md', encoding='utf-8')
     update.message.reply_text(f.read(), parse_mode='Markdown')
 
 
 def espais(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
     # update.message.reply_text('https://youtu.be/LXdOqeuG438')
-    f = codecs.open('info/espais.md', encoding='utf-8')
+    f = codecs.open('botTelegram/info/espais.md', encoding='utf-8')
     update.message.reply_text(f.read(), parse_mode='Markdown')
 
 
