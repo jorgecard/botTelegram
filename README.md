@@ -1,3 +1,6 @@
+# Tomado de:
+https://github.com/danimrprofe/botTelegram
+
 # De qué se trata
 
 Este proyecto ha sido creado para experimentar la creación de un **bot** para Telegram. El bot es un programa que contesta en un canal de Telegram propio a los comandos que introducte el usuario, o publica eventos y mensajes por si mismo automática,emte
