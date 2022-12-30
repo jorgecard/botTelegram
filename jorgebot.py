@@ -60,9 +60,7 @@ def start(update: Update, context: CallbackContext) -> None:
 
 def correuelectronic(update: Update, context: CallbackContext) -> None:
     mensaje_con_clientes = iptv.analysis()
-    update.message.reply_text(
-        'iesramonllull@educaib.eu'
-    )
+    update.message.reply_text(mensaje_con_clientes)
     update.message.reply_text(tornar)
 
 
