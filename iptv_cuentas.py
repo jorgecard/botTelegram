@@ -14,8 +14,8 @@ def create_onedrive_directdownload (onedrive_link):
 
 onedrive_link = "https://1drv.ms/x/s!AuH0cqh1REoYnh0TVaXnn9QZQ6_7?e=YohsZS"
 onedrive_direct_link = create_onedrive_directdownload(onedrive_link)
-print(f"Original OneDriveLink: {onedrive_link}")
-print(f"Generated Direct Download Link: {onedrive_direct_link}")
+# print(f"Original OneDriveLink: {onedrive_link}")
+# print(f"Generated Direct Download Link: {onedrive_direct_link}")
 df = pd.read_excel(onedrive_direct_link, sheet_name = "Magis", skiprows=3)
 
 df.drop(["Unnamed: 8", "Vendedor", "Créditos", "$"],axis=1, inplace=True) # borramos las columnas inservibles
