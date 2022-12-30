@@ -59,7 +59,7 @@ def start(update: Update, context: CallbackContext) -> None:
 
 
 def correuelectronic(update: Update, context: CallbackContext) -> None:
-    python botTelegram/iptv_cuentas.py
+    mensaje_con_clientes = iptv.analysis()
     update.message.reply_text(
         'iesramonllull@educaib.eu'
     )
