@@ -21,6 +21,8 @@ bot.
 import logging
 import codecs
 
+import iptv_cuentas as iptv
+
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
 
@@ -266,3 +268,6 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+#     mensaje_con_clientes = iptv.analysis()
+#         return mensaje_con_clientes
