@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import datetime
 import base64
 
-import pyautogui, webbrowser
 from time import sleep
 
 def create_onedrive_directdownload (onedrive_link):
