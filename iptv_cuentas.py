@@ -95,6 +95,7 @@ def analysis():
         mensaje = mensaje.replace("í", "%C3%AD")
         num = whpp.replace("wa.me/", "")
         # https://api.whatsapp.com/send?phone=593555555&text=Hola%20texto
-        string = f"{string} \n \n{cliente}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
+#         string = f"{string} \n \n{cliente}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
+        string = f"{string} \n \n{cliente}\napi.whatsapp.com/send?phone={num}&text={mensaje}"
     print(f"Telegram: {string}")
     return string
