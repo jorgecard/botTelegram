@@ -48,7 +48,7 @@ def analysis():
     df_cl = df.drop_duplicates(['Usuario'], keep='last', inplace=False)
 
     #Clientes por vencer
-    n_days = 3
+    n_days = 6
 
     fecha_hoy = datetime.datetime.now()
     fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
@@ -58,7 +58,6 @@ def analysis():
     mask = (df_cl['Fecha exp'] >= fecha_hoy) & (df_cl['Fecha exp'] <= (fecha_hoy + pd.Timedelta(days=n_days)))
     df_vencer=df_cl.loc[mask]
     df_vencer["Días de vigencia"] = df_vencer["Fecha exp"] - fecha_hoy
-    df_vencer
 
     # Usuarios
     df_usuarios = pd.read_excel(onedrive_direct_link, sheet_name = "Usuarios", skiprows=0)
@@ -95,8 +94,8 @@ def analysis():
         mensaje = mensaje.replace("í", "%C3%AD")
         num = whpp.replace("wa.me/", "")
         # https://api.whatsapp.com/send?phone=593555555&text=Hola%20texto
-        string = f"{string} \n \n{cliente}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
-        string = string + "cliente:" + cliente
-    print("corrió analysis" + cliente)
+        string = f"{string} \n \n{cliente}\n{días}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
     print(f"Telegram: {string}")
     return string
+
+analysis()
