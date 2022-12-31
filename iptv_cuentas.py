@@ -28,7 +28,7 @@ def string_cliente(cliente):
         resultCliente = resultCliente.replace("Cliente ", "")
     return resultCliente
 
-def analisis():
+def analysis():
     onedrive_link = "https://1drv.ms/x/s!AuH0cqh1REoYnh0TVaXnn9QZQ6_7?e=YohsZS"
     onedrive_direct_link = create_onedrive_directdownload(onedrive_link)
     # print(f"Original OneDriveLink: {onedrive_link}")
