@@ -97,5 +97,3 @@ def analysis():
         string = f"{string} \n \n{cliente}\n{días}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
     print(f"Telegram: {string}")
     return string
-
-analysis()
