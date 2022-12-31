@@ -48,7 +48,7 @@ def analysis():
     df_cl = df.drop_duplicates(['Usuario'], keep='last', inplace=False)
 
     #Clientes por vencer
-    n_days = 6
+    n_days = 10
 
     fecha_hoy = datetime.datetime.now()
     fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
@@ -68,10 +68,10 @@ def analysis():
 
     string = ""
     for index, registro in df_vencer.iterrows():
-        exp = (df_vencer.at[index, "Fecha exp"])
         user = (df_vencer.at[index, "Usuario"])
         días = str(df_vencer.at[index, "Fecha exp"] - fecha_hoy)
         días = días.replace('days 00:00:00','días')
+        observaciones = (df_vencer.at[index, "Observaciones"])
         buscador = True                # bandera
         for i, registro in df_usuarios.iterrows():
             if user == str(df_usuarios.at[i, "Usuario"]):
@@ -94,6 +94,6 @@ def analysis():
         mensaje = mensaje.replace("í", "%C3%AD")
         num = whpp.replace("wa.me/", "")
         # https://api.whatsapp.com/send?phone=593555555&text=Hola%20texto
-        string = f"{string} \n \n{cliente}\n{días}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
+        string = f"{string} \n \n{cliente}\n{días}, {observaciones}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
     print(f"Telegram: {string}")
     return string

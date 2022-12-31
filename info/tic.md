@@ -1,13 +1,20 @@
-Al *departament de tecnologia* moltes matèries relacionades amb les TIC (tecnologies de la informació i la comunicació).
+El *departamento de tecnología*.
 
-Canal de TIC: https://www.youtube.com/channel/UCCKyd2Q01QBeTGtAt4E8WjA
+Canal de TIC: https://www.youtube.com/@nanotech9574
 
-*A ESO i batxillerat*:
+- 📗 Web: https://www.nanotechecuador.com/
+- 📗 Facebook: https://www.facebook.com/nanotechecuador
+- 📗 Instagram: https://www.instagram.com/nanotechecuador/
 
-- 📗 TIC de 4t d\'ESO /tic4eso
-- 📗 TIC de 1r de batxillerat /TIC1BAT
-- 📗 TIC de 2n de batxillerat /TIC2BAT
+Blogs del projecte *CIL- IACLE 2020-21*:
 
-També feim TIC a /fpbasica **d'informatica d\'oficina**:
+- 📰[Web](https://www.nanotechecuador.com/)	1esod-CIL/IACLE,  2020-21
+- 📰[Face](https://www.facebook.com/nanotechecuador) 1esoe-CIL/IACLE,  2020-21
+- 📰[Insta](https://www.instagram.com/nanotechecuador/) 2esod-CIL/IACLE   2020-21
+- 📰[On the track E](https://1esoe1920.wordpress.com/) 2esoe-CIL/IACLE   2020-21
+- 📰[SendaD](https://1esod1819.wordpress.com/) 3esod-CIL/IACLE   2020-21
+- 📰[SendaE](https://1esoe1819.wordpress.com/) 3esoe-CIL/IACLE   2020-21
+- 📰[Camí D](https://1esod1718.wordpress.com/) 4esob-CIL/IACLE   2020-21
 
-Torna al principi amb /start
+
+Vuelve al principio con /start
