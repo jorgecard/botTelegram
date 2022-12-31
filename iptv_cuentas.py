@@ -6,13 +6,29 @@ import base64
 
 from time import sleep
 
-def analysis():
-    def create_onedrive_directdownload (onedrive_link):
-        data_bytes64 = base64.b64encode(bytes(onedrive_link, 'utf-8'))
-        data_bytes64_String = data_bytes64.decode('utf-8').replace('/','_').replace('+','-').rstrip("=")
-        resultUrl = f"https://api.onedrive.com/v1.0/shares/u!{data_bytes64_String}/root/content"
-        return resultUrl
+def create_onedrive_directdownload (onedrive_link):
+    data_bytes64 = base64.b64encode(bytes(onedrive_link, 'utf-8'))
+    data_bytes64_String = data_bytes64.decode('utf-8').replace('/','_').replace('+','-').rstrip("=")
+    resultUrl = f"https://api.onedrive.com/v1.0/shares/u!{data_bytes64_String}/root/content"
+    return resultUrl
 
+# String Cliente (arreglamos si dice "Cliente o REf")
+def string_cliente(cliente):
+    pos_ref = cliente.find("Ref")
+    if pos_ref == -1:
+        pos_ref = cliente.find("REF")
+    if pos_ref == -1:
+        pos_ref = cliente.find("ref")
+    if pos_ref != -1:
+        resultCliente = cliente[: pos_ref-1]
+    else:
+        resultCliente = cliente
+    pos_cli = resultCliente[:].find("Cliente")     #busca en todo el string
+    if pos_cli != -1:
+        resultCliente = resultCliente.replace("Cliente ", "")
+    return resultCliente
+
+def analisis():
     onedrive_link = "https://1drv.ms/x/s!AuH0cqh1REoYnh0TVaXnn9QZQ6_7?e=YohsZS"
     onedrive_direct_link = create_onedrive_directdownload(onedrive_link)
     # print(f"Original OneDriveLink: {onedrive_link}")
@@ -51,22 +67,6 @@ def analysis():
     df_usuarios['Cliente'] = df_usuarios['Cliente'].astype(str)
     df_usuarios['Cliente'] = df_usuarios['Cliente'].apply(lambda x: x.replace('nan',''))
 
-    # String Cliente (arreglamos si dice "Cliente o REf")
-    def string_cliente(cliente):
-        pos_ref = cliente.find("Ref")
-        if pos_ref == -1:
-            pos_ref = cliente.find("REF")
-        if pos_ref == -1:
-            pos_ref = cliente.find("ref")
-        if pos_ref != -1:
-            resultCliente = cliente[: pos_ref-1]
-        else:
-            resultCliente = cliente
-        pos_cli = resultCliente[:].find("Cliente")     #busca en todo el string
-        if pos_cli != -1:
-            resultCliente = resultCliente.replace("Cliente ", "")
-        return resultCliente
-
     string = ""
     for index, registro in df_vencer.iterrows():
         exp = (df_vencer.at[index, "Fecha exp"])
@@ -95,7 +95,8 @@ def analysis():
         mensaje = mensaje.replace("í", "%C3%AD")
         num = whpp.replace("wa.me/", "")
         # https://api.whatsapp.com/send?phone=593555555&text=Hola%20texto
-#         string = f"{string} \n \n{cliente}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
+        string = f"{string} \n \n{cliente}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
         string = string + "cliente:" + cliente
     print("corrió analysis" + cliente)
+    print(f"Telegram: {string}")
     return string
