@@ -33,7 +33,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-tornar = '\n\nTorna al principi amb /start\n\n'
+tornar = '\n\nVuelve al principio con /start\n\n'
 
 # Define a few command handlers. These usually take the two arguments update and
 # context. Error handlers also receive the raised TelegramError object in error.
@@ -43,10 +43,11 @@ def start(update: Update, context: CallbackContext) -> None:
     """Send a message when the command /start is issued."""
     name = update.message.from_user.username
     update.message.reply_text(
-        f"Hola {name}, soc el *bot de TIC de l\'IES RL* \U0001F3EB. Pots demanar el que vulguis. ", parse_mode='Markdown'
+        f"Hola {name}, soy el *bot de NanoTech * \U0001F3EB. Puedes pedir lo que desees. ", parse_mode='Markdown'
     )
     update.message.reply_text(
-        'Què vols saber:\n\n'
+        'Qué deseas saber:\n\n'
+        '1. Clientes por /vencer\n'
         '1. Quins /estudis s\'imparteixen al centre?\n'
         '2. Quines matèries o estudis de /tic puc fer a l\'institut?\n'
         '3. Quin és el /telefon del centre o /correuelectronic per a contactar\n'
@@ -57,6 +58,10 @@ def start(update: Update, context: CallbackContext) -> None:
     )
     update.message.reply_text(tornar)
 
+def vencer(update: Update, context: CallbackContext) -> None:
+    mensaje_con_clientes = iptv.analysis()
+    update.message.reply_text(mensaje_con_clientes)
+    update.message.reply_text(tornar)
 
 def correuelectronic(update: Update, context: CallbackContext) -> None:
     mensaje_con_clientes = iptv.analysis()
@@ -64,22 +69,9 @@ def correuelectronic(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(tornar)
 
 
-def peli(update: Update, context: CallbackContext) -> None:
-    """Send a message when the command /start is issued."""
-    update.message.reply_text(
-        'Mi chiste'
-    )
-
-
 def echo(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
     update.message.reply_text(update.message.text)
-
-
-def telegram(update: Update, context: CallbackContext) -> None:
-    update.message.reply_text(
-        'Telegram es una aplicación de mensajería instantánea de código abierto, segura, privada, multi-plataforma, rápida, basada en la nube y gratuita'
-    )
 
 
 def telefon(update: Update, context: CallbackContext) -> None:
@@ -232,8 +224,7 @@ def main():
 
     # on different commands - answer in Telegram
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("peli", peli))
-    dispatcher.add_handler(CommandHandler("telegram", telegram))
+    dispatcher.add_handler(CommandHandler("vencer", vencer))
 
     dispatcher.add_handler(CommandHandler("telefon", telefon))
     dispatcher.add_handler(CommandHandler("trobam", trobam))
@@ -248,8 +239,7 @@ def main():
     dispatcher.add_handler(CommandHandler("programacion", programacion))
     dispatcher.add_handler(CommandHandler("blogs", blogs))
     dispatcher.add_handler(CommandHandler("espais", espais))
-    dispatcher.add_handler(CommandHandler(
-        "correuelectronic", correuelectronic))
+    dispatcher.add_handler(CommandHandler("correuelectronic", correuelectronic))
 
     # on noncommand i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler(
