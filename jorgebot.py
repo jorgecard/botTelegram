@@ -52,7 +52,7 @@ def start(update: Update, context: CallbackContext) -> None:
         '3. Clientes /inactivos\n'
         '4. /location\n'
         '5. /tic\n'
-        '![Foto de l\'institut\'](https://www.casaljoanalcover.es/wp-content/uploads/2014/03/1195690728_f.jpg)', parse_mode='Markdown'
+        '![Foto de l\'institut\'](https://lh5.googleusercontent.com/WQwQDjqYBIFYwpwnMgTPzWl1pKJXEMWcoySO2xLZpOH1JZPSobSIH4Ho3y9cJnmSIeSr62IrrySq62uYwG1Iyt2soUEk1oBo6WI-skfClUNjh5AeVaRNPNz8CeteRboFHEzl5qRbhSQ=w16383)', parse_mode='Markdown'
     )
     update.message.reply_text(tornar)
 
