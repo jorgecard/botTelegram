@@ -115,7 +115,7 @@ def por_vencer(n_days=10):
         else:
             string = f"{string} \n \n{cliente0}\n{días}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
     # print(f"Telegram: {string}")
-    return string
+    return string, df_vencer
 
 
 def vencidos():
@@ -148,4 +148,4 @@ def vencidos():
         mensaje = mensaje.replace(" ", "%20")
         mensaje = mensaje.replace("í", "%C3%AD")
         string = f"{string} \n \n{cliente0}\n{días}\n{observaciones}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
-    return string
+    return string, df_vencidos
