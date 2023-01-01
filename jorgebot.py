@@ -24,7 +24,8 @@ import codecs
 import iptv_cuentas as iptv
 
 from telegram import Update
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+# from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+from telegram.ext import Updater, CommandHandler, MessageHandler, CallbackContext
 
 # Enable logging
 logging.basicConfig(
@@ -117,7 +118,8 @@ def main():
 
     # on noncommand i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler(
-        Filters.text & ~Filters.command, echo))
+        filters.TEXT & filters.Entity(echo)))
+#         Filters.text & ~Filters.command, echo))
 
     # Start the Bot
     updater.start_polling()
