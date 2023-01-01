@@ -85,7 +85,7 @@ def analysis():
     return df
 
 
-def por_vencer(n_days):
+def por_vencer(n_days=10):
     df = analysis()
 
     fecha_hoy = datetime.datetime.now()
@@ -128,6 +128,7 @@ def vencidos():
     mask = (df['Fecha exp'] < fecha_hoy)
     df_vencidos = df[mask]
     df_vencidos = df_vencidos.sort_values(by=['Días de vigencia'], ascending=False, inplace=False)
+    df_vencidos = df_vencidos.head(10)
 
     string = ""
     for index, registro in df_vencidos.iterrows():
