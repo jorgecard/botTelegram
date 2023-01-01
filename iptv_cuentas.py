@@ -148,4 +148,5 @@ def vencidos():
         mensaje = mensaje.replace(" ", "%20")
         mensaje = mensaje.replace("í", "%C3%AD")
         string = f"{string} \n \n{cliente0}\n{días}\n{observaciones}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
+        df_vencidos
     return string, df_vencidos
