@@ -128,7 +128,7 @@ def vencidos():
     mask = (df['Fecha exp'] < fecha_hoy)
     df_vencidos = df[mask]
     df_vencidos = df_vencidos.sort_values(by=['Días de vigencia'], ascending=False, inplace=False)
-    df_vencidos = df_vencidos.head(10)
+    df_vencidos = df_vencidos.head(15)
 
     string = ""
     for index, registro in df_vencidos.iterrows():
@@ -141,7 +141,7 @@ def vencidos():
             num = str(whpp.replace("wa.me/", ""))
         plataforma = df_vencidos.at[index, "Plataforma"]
         días = str(df_vencidos.at[index, "Días de vigencia"])
-        días = días.replace('days 00:00:00', 'días')
+        días = días.replace('days +00:00:00', 'días')
         observaciones = (df_vencidos.at[index, "Observaciones"])
         mensaje = f"Buen día estimado usuario {cliente}, queríamos informarle que le extrañamos en {plataforma}."
         mensaje = mensaje.replace(" ", "%20")
