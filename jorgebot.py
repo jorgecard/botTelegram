@@ -24,8 +24,8 @@ import codecs
 import iptv_cuentas as iptv
 
 from telegram import Update
-# from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
-from telegram.ext import Updater, CommandHandler, MessageHandler, CallbackContext
+from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
+# from telegram.ext import Updater, CommandHandler, MessageHandler, CallbackContext
 
 # Enable logging
 logging.basicConfig(
@@ -101,8 +101,7 @@ def main():
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater(
-        "5049299291:AAGimNKtuj3SCuGAVv8ARNpApH5Vsop4iA4", use_context=True)
+    updater = Updater("5049299291:AAGimNKtuj3SCuGAVv8ARNpApH5Vsop4iA4", use_context=True)
 
     # Get the dispatcher to register handlers
     dispatcher = updater.dispatcher
@@ -118,8 +117,8 @@ def main():
 
     # on noncommand i.e message - echo the message on Telegram
     dispatcher.add_handler(MessageHandler(
-        filters.TEXT & filters.Entity(echo)))
-#         Filters.text & ~Filters.command, echo))
+#         filters.TEXT & filters.Entity(echo)))
+        Filters.text & ~Filters.command, echo))
 
     # Start the Bot
     updater.start_polling()
