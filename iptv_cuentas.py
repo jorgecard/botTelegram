@@ -144,7 +144,7 @@ def vencidos():
         días = str(df_vencidos.at[index, "Días de vigencia"])
         días = días.replace('days +00:00:00', 'días')
         observaciones = (df_vencidos.at[index, "Observaciones"]) + "\n" +"num: " + num
-        mensaje = f"Buen día estimado usuario {cliente}, queríamos informarle que le extrañamos en {plataforma}."
+        mensaje = f"{cliente}, {plataforma}."
         mensaje = mensaje.replace(" ", "%20")
         mensaje = mensaje.replace("í", "%C3%AD")
         string = f"{string} \n \n{cliente0}\n{días}\n{observaciones}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
