@@ -137,6 +137,7 @@ def vencidos():
         cliente0 = (df_vencidos.at[index, "Cliente0"])
         whpp = df_vencidos.at[index, "Whpp"]
         whpp = str(whpp)
+        num = whpp                      # para que se borre el anterior
         if whpp != "nan":
             num = str(whpp.replace("wa.me/", ""))
         plataforma = df_vencidos.at[index, "Plataforma"]
