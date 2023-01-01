@@ -56,8 +56,13 @@ def start(update: Update, context: CallbackContext) -> None:
     )
     update.message.reply_text(tornar)
 
-def vencer(update: Update, context: CallbackContext) -> None:
-    mensaje_con_clientes = iptv.analysis()
+def por_vencer(update: Update, context: CallbackContext) -> None:
+    mensaje_con_clientes = iptv.por_vencer()
+    update.message.reply_text(mensaje_con_clientes)
+    update.message.reply_text(tornar)
+
+def vencidos(update: Update, context: CallbackContext) -> None:
+    mensaje_con_clientes = iptv.vencidos()
     update.message.reply_text(mensaje_con_clientes)
     update.message.reply_text(tornar)
 
@@ -103,7 +108,8 @@ def main():
 
     # on different commands - answer in Telegram
     dispatcher.add_handler(CommandHandler("start", start))
-    dispatcher.add_handler(CommandHandler("vencer", vencer))
+    dispatcher.add_handler(CommandHandler("vencer", por_vencer))
+    dispatcher.add_handler(CommandHandler("inactivos", vencidos))
 
     dispatcher.add_handler(CommandHandler("location", location))
     dispatcher.add_handler(CommandHandler("tic", tic))

@@ -28,142 +28,122 @@ def string_cliente(cliente):
         resultCliente = resultCliente.replace("Cliente ", "")
     return resultCliente
 
+
 def analysis():
+    # Fuente:
     onedrive_link = "https://1drv.ms/x/s!AuH0cqh1REoYnh0TVaXnn9QZQ6_7?e=YohsZS"
     onedrive_direct_link = create_onedrive_directdownload(onedrive_link)
     # print(f"Original OneDriveLink: {onedrive_link}")
     # print(f"Generated Direct Download Link: {onedrive_direct_link}")
-    df = pd.read_excel(onedrive_direct_link, sheet_name = "Magis", skiprows=3)
 
-    df.drop(["Unnamed: 8", "Vendedor", "Créditos", "$"],axis=1, inplace=True) # borramos las columnas inservibles
+    # Usuarios -------------------
+    df_usuarios = pd.read_excel(onedrive_direct_link, sheet_name="Usuarios", skiprows=0)
+    df_usuarios.drop(["Contraseña"], axis=1, inplace=True)  # borramos las columnas inservibles
+    # Cliente (Nombres)
+    df_usuarios['Cliente'] = df_usuarios['Cliente'].astype(str)
+    df_usuarios['Cliente'] = df_usuarios['Cliente'].apply(lambda x: x.replace('nan', ''))
+
+    # Base ----------------------
+    df = pd.read_excel(onedrive_direct_link, sheet_name="Magis", skiprows=3)
+    df.drop(["Unnamed: 8", "Vendedor", "Créditos", "$"], axis=1, inplace=True)  # borramos las columnas inservibles
+    df.drop(["CRÉDITOS", "MONTO", "VENDEDOR"], axis=1, inplace=True)  # borramos las columnas inservibles
+
+    # Borramos clientes duplicados
+    df.drop_duplicates(['Usuario'], keep='last', inplace=True)
 
     # Índice
     df = df.set_index(["#"])
 
     # Observaciones
     df['Observaciones'] = df['Observaciones'].astype(str)
-    df['Observaciones'] = df['Observaciones'].apply(lambda x: x.replace('nan',''))
+    df['Observaciones'] = df['Observaciones'].apply(lambda x: x.replace('nan', ''))
 
-    #Borramos clientes duplicados
-    df_cl = df.drop_duplicates(['Usuario'], keep='last', inplace=False)
+    # Días de vigencia
+    fecha_hoy = datetime.datetime.now()
+    fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
+    fecha_hoy = pd.to_datetime(fecha_hoy)
+    df["Días de vigencia"] = df["Fecha exp"] - fecha_hoy
 
-    #Clientes por vencer
-    n_days = 10
+    df["Cliente"] = df["Usuario"]
+    df["Cliente0"] = df["Usuario"]
+
+    for index, registro in df.iterrows():
+        user = (df.at[index, "Usuario"])
+        buscador = True  # bandera (Verdadero = no encontrado, Falso = encontrado)
+        for i, registro in df_usuarios.iterrows():
+            if user == str(df_usuarios.at[i, "Usuario"]):
+                cliente = df_usuarios.at[i, "Cliente"]
+                cliente0 = cliente
+                cliente = string_cliente(cliente)
+                if cliente != "":
+                    df.at[index, "Cliente"] = cliente
+                    df.at[index, "Cliente0"] = cliente0
+                df.at[index, "Whpp"] = df_usuarios.at[i, "Whpp"]
+                df.at[index, "Plataforma"] = df_usuarios.at[i, "Plataforma"]
+                buscador = False
+                break
+    return df
+
+
+def por_vencer(n_days):
+    df = analysis()
 
     fecha_hoy = datetime.datetime.now()
     fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
     fecha_hoy = pd.to_datetime(fecha_hoy)
-    fecha_hoy
 
-    mask = (df_cl['Fecha exp'] >= fecha_hoy) & (df_cl['Fecha exp'] <= (fecha_hoy + pd.Timedelta(days=n_days)))
-    df_vencer=df_cl.loc[mask]
-    df_vencer["Días de vigencia"] = df_vencer["Fecha exp"] - fecha_hoy
-
-    # Usuarios
-    df_usuarios = pd.read_excel(onedrive_direct_link, sheet_name = "Usuarios", skiprows=0)
-    df_usuarios.drop(["Contraseña"],axis=1, inplace=True) # borramos las columnas inservibles
-    # Cliente (Nombres)
-    df_usuarios['Cliente'] = df_usuarios['Cliente'].astype(str)
-    df_usuarios['Cliente'] = df_usuarios['Cliente'].apply(lambda x: x.replace('nan',''))
+    mask = (df['Fecha exp'] >= fecha_hoy) & (df['Fecha exp'] <= (fecha_hoy + pd.Timedelta(days=n_days)))
+    df_vencer = df[mask]
+    df_vencer.sort_values(by=['Días de vigencia'], ascending=True, inplace=True)
 
     string = ""
     for index, registro in df_vencer.iterrows():
         user = (df_vencer.at[index, "Usuario"])
-        días = str(df_vencer.at[index, "Fecha exp"] - fecha_hoy)
-        días = días.replace('days 00:00:00','días')
+        cliente = (df_vencer.at[index, "Cliente"])
+        cliente0 = (df_vencer.at[index, "Cliente0"])
+        whpp = df_vencer.at[index, "Whpp"]
+        num = whpp.replace("wa.me/", "")
+        plataforma = df_vencer.at[index, "Plataforma"]
+        días = str(df_vencer.at[index, "Días de vigencia"])
+        días = días.replace('days 00:00:00', 'días')
         observaciones = (df_vencer.at[index, "Observaciones"])
-        buscador = True                # bandera
-        for i, registro in df_usuarios.iterrows():
-            if user == str(df_usuarios.at[i, "Usuario"]):
-                cliente = df_usuarios.at[i, "Cliente"]
-                whpp = df_usuarios.at[i, "Whpp"]
-                plataforma = df_usuarios.at[i, "Plataforma"]
-                buscador = False
-                break
-            else:
-                cliente = ''
-                whpp = ""
-                plataforma = ""
-        if buscador:
-            print("usuario no encontrado: " + user)
-        if cliente == "":
-            cliente = user
-        cliente = string_cliente(cliente)
         mensaje = f"Buen día estimado usuario {cliente}, este mensaje es para recordarle que su cuenta en la plataforma {plataforma} tiene {días} de vigencia. Agradecemos su gentil preferencia."
         mensaje = mensaje.replace(" ", "%20")
         mensaje = mensaje.replace("í", "%C3%AD")
-        num = whpp.replace("wa.me/", "")
-        # https://api.whatsapp.com/send?phone=593555555&text=Hola%20texto
-        string = f"{string} \n \n{cliente}\n{días}, *{observaciones}*\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
-    print(f"Telegram: {string}")
+        if observaciones != "":
+            string = f"{string} \n \n{cliente0}\n{días}\n{observaciones}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
+        else:
+            string = f"{string} \n \n{cliente0}\n{días}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
+    # print(f"Telegram: {string}")
     return string
 
-def analysis_inactivos():
-    onedrive_link = "https://1drv.ms/x/s!AuH0cqh1REoYnh0TVaXnn9QZQ6_7?e=YohsZS"
-    onedrive_direct_link = create_onedrive_directdownload(onedrive_link)
-    # print(f"Original OneDriveLink: {onedrive_link}")
-    # print(f"Generated Direct Download Link: {onedrive_direct_link}")
-    df = pd.read_excel(onedrive_direct_link, sheet_name = "Magis", skiprows=3)
 
-    df.drop(["Unnamed: 8", "Vendedor", "Créditos", "$"],axis=1, inplace=True) # borramos las columnas inservibles
-
-    # Índice
-    df = df.set_index(["#"])
-
-    # Observaciones
-    df['Observaciones'] = df['Observaciones'].astype(str)
-    df['Observaciones'] = df['Observaciones'].apply(lambda x: x.replace('nan',''))
-
-    #Borramos clientes duplicados
-    df_cl = df.drop_duplicates(['Usuario'], keep='last', inplace=False)
-
-    #Clientes por vencer
-    n_days = 10
+def vencidos():
+    df = analysis()
 
     fecha_hoy = datetime.datetime.now()
     fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
     fecha_hoy = pd.to_datetime(fecha_hoy)
-    fecha_hoy
 
-    mask = (df_cl['Fecha exp'] >= fecha_hoy) & (df_cl['Fecha exp'] <= (fecha_hoy + pd.Timedelta(days=n_days)))
-    df_vencer=df_cl.loc[mask]
-    df_vencer["Días de vigencia"] = df_vencer["Fecha exp"] - fecha_hoy
-
-    # Usuarios
-    df_usuarios = pd.read_excel(onedrive_direct_link, sheet_name = "Usuarios", skiprows=0)
-    df_usuarios.drop(["Contraseña"],axis=1, inplace=True) # borramos las columnas inservibles
-    # Cliente (Nombres)
-    df_usuarios['Cliente'] = df_usuarios['Cliente'].astype(str)
-    df_usuarios['Cliente'] = df_usuarios['Cliente'].apply(lambda x: x.replace('nan',''))
+    mask = (df['Fecha exp'] < fecha_hoy)
+    df_vencidos = df[mask]
+    df_vencidos = df_vencidos.sort_values(by=['Días de vigencia'], ascending=False, inplace=False)
 
     string = ""
-    for index, registro in df_vencer.iterrows():
-        user = (df_vencer.at[index, "Usuario"])
-        días = str(df_vencer.at[index, "Fecha exp"] - fecha_hoy)
-        días = días.replace('days 00:00:00','días')
-        observaciones = (df_vencer.at[index, "Observaciones"])
-        buscador = True                # bandera
-        for i, registro in df_usuarios.iterrows():
-            if user == str(df_usuarios.at[i, "Usuario"]):
-                cliente = df_usuarios.at[i, "Cliente"]
-                whpp = df_usuarios.at[i, "Whpp"]
-                plataforma = df_usuarios.at[i, "Plataforma"]
-                buscador = False
-                break
-            else:
-                cliente = ''
-                whpp = ""
-                plataforma = ""
-        if buscador:
-            print("usuario no encontrado: " + user)
-        if cliente == "":
-            cliente = user
-        cliente = string_cliente(cliente)
-        mensaje = f"Buen día estimado usuario {cliente}, este mensaje es para recordarle que su cuenta en la plataforma {plataforma} tiene {días} de vigencia. Agradecemos su gentil preferencia."
+    for index, registro in df_vencidos.iterrows():
+        user = (df_vencidos.at[index, "Usuario"])
+        cliente = (df_vencidos.at[index, "Cliente"])
+        cliente0 = (df_vencidos.at[index, "Cliente0"])
+        whpp = df_vencidos.at[index, "Whpp"]
+        whpp = str(whpp)
+        if whpp != "nan":
+            num = str(whpp.replace("wa.me/", ""))
+        plataforma = df_vencidos.at[index, "Plataforma"]
+        días = str(df_vencidos.at[index, "Días de vigencia"])
+        días = días.replace('days 00:00:00', 'días')
+        observaciones = (df_vencidos.at[index, "Observaciones"])
+        mensaje = f"Buen día estimado usuario {cliente}, queríamos informarle que le extrañamos en {plataforma}."
         mensaje = mensaje.replace(" ", "%20")
         mensaje = mensaje.replace("í", "%C3%AD")
-        num = whpp.replace("wa.me/", "")
-        # https://api.whatsapp.com/send?phone=593555555&text=Hola%20texto
-        string = f"{string} \n \n{cliente}\n{días}, *{observaciones}*\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
-    print(f"Telegram: {string}")
+        string = f"{string} \n \n{cliente0}\n{días}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
     return string
