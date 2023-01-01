@@ -143,7 +143,7 @@ def vencidos():
         plataforma = df_vencidos.at[index, "Plataforma"]
         días = str(df_vencidos.at[index, "Días de vigencia"])
         días = días.replace('days +00:00:00', 'días')
-        observaciones = (df_vencidos.at[index, "Observaciones"]) + "num: " + num
+        observaciones = (df_vencidos.at[index, "Observaciones"]) + "\n" +"num: " + num
         mensaje = f"Buen día estimado usuario {cliente}, queríamos informarle que le extrañamos en {plataforma}."
         mensaje = mensaje.replace(" ", "%20")
         mensaje = mensaje.replace("í", "%C3%AD")
