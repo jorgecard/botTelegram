@@ -51,8 +51,9 @@ def start(update: Update, context: CallbackContext) -> None:
         '1. Clientes por /vencer\n'
         '2. Clientes /activos\n'
         '3. Clientes /inactivos\n'
-        '4. /location\n'
-        '5. /tic\n'
+        '4. Clientes con /observaciones\n'
+        '5. /location\n'
+        '6. /tic\n'
         '![Foto de l\'institut\'](https://www.casaljoanalcover.es/wp-content/uploads/2014/03/1195690728_f.jpg)', parse_mode='Markdown'
     )
     update.message.reply_text(tornar)
@@ -67,6 +68,10 @@ def vencidos(update: Update, context: CallbackContext) -> None:
     update.message.reply_text(mensaje_con_clientes)
     update.message.reply_text(tornar)
 
+def observaciones(update: Update, context: CallbackContext) -> None:
+    mensaje_con_clientes, df = iptv.observaciones()
+    update.message.reply_text(mensaje_con_clientes)
+    update.message.reply_text(tornar)
 
 def echo(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
@@ -110,6 +115,7 @@ def main():
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("vencer", por_vencer))
     dispatcher.add_handler(CommandHandler("inactivos", vencidos))
+    dispatcher.add_handler(CommandHandler("observaciones", observaciones))
 
     dispatcher.add_handler(CommandHandler("location", location))
     dispatcher.add_handler(CommandHandler("tic", tic))
