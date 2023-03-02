@@ -150,3 +150,36 @@ def vencidos():
         string = f"{string} \n \n{cliente0}\n{días}\n{observaciones}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
         df_vencidos
     return string, df_vencidos
+
+
+def observaciones():
+    
+    df = analysis()
+    
+    fecha_hoy = datetime.datetime.now()
+    fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
+    fecha_hoy = pd.to_datetime(fecha_hoy)
+
+    mask = (df['Fecha exp'] >= fecha_hoy) & (df['Fecha exp'] <= (fecha_hoy + pd.Timedelta(days=100))) & (df['Observaciones'] != "")
+    df_observaciones=df[mask]
+    df_observaciones = df_observaciones.sort_values(by=['Días de vigencia'], ascending=True, inplace=False)
+    # df_observaciones
+
+    string = ""
+    for index, registro in df_observaciones.iterrows():
+        user = (df_observaciones.at[index, "Usuario"])
+        cliente = (df_observaciones.at[index, "Cliente"])
+        cliente0 = (df_observaciones.at[index, "Cliente0"])
+        whpp = df_observaciones.at[index, "Whpp"]
+        whpp = str(whpp)
+        if whpp != "nan":
+            num = str(whpp.replace("wa.me/", ""))
+        plataforma = df_observaciones.at[index, "Plataforma"]
+        días = str(df_observaciones.at[index, "Días de vigencia"])
+        días = días.replace('days 00:00:00','días')
+        observaciones = (df_observaciones.at[index, "Observaciones"])
+        mensaje = f"Buen día estimado usuario {cliente}, queríamos informarle que en {plataforma}."
+        mensaje = mensaje.replace(" ", "%20")
+        mensaje = mensaje.replace("í", "%C3%AD")
+        string = f"{string} \n \n{cliente0}\n{días}\n{observaciones}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
+    return string, df_observaciones
