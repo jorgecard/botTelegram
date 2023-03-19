@@ -35,18 +35,23 @@ def analysis():
     onedrive_direct_link = create_onedrive_directdownload(onedrive_link)
     # print(f"Original OneDriveLink: {onedrive_link}")
     # print(f"Generated Direct Download Link: {onedrive_direct_link}")
-
+    
     # Usuarios -------------------
-    df_usuarios = pd.read_excel(onedrive_direct_link, sheet_name="Usuarios", skiprows=0)
-    df_usuarios.drop(["Contraseña"], axis=1, inplace=True)  # borramos las columnas inservibles
+    df_usuarios = pd.read_excel(onedrive_direct_link, sheet_name = "Usuarios", skiprows=0)
+    df_usuarios.drop(["Contraseña"],axis=1, inplace=True) # borramos las columnas inservibles
     # Cliente (Nombres)
     df_usuarios['Cliente'] = df_usuarios['Cliente'].astype(str)
-    df_usuarios['Cliente'] = df_usuarios['Cliente'].apply(lambda x: x.replace('nan', ''))
+    df_usuarios['Cliente'] = df_usuarios['Cliente'].apply(lambda x: x.replace('nan',''))
+    
+    # Bases ----------------------
+    df = pd.read_excel(onedrive_direct_link, sheet_name = "Magis", skiprows=3)
+    df.drop(["Unnamed: 8", "Vendedor", "Créditos", "$"],axis=1, inplace=True) # borramos las columnas inservibles
+    df.drop(["CRÉDITOS", "MONTO", "VENDEDOR"],axis=1, inplace=True) # borramos las columnas inservibles
+    df2 = pd.read_excel(onedrive_direct_link, sheet_name = "DirecTV Go", skiprows=1)
+    df2.drop(["Fecha de pago",  "Correo", "Contraseña"],axis=1, inplace=True) # borramos las columnas inservibles
 
-    # Base ----------------------
-    df = pd.read_excel(onedrive_direct_link, sheet_name="Magis", skiprows=3)
-    df.drop(["Unnamed: 8", "Vendedor", "Créditos", "$"], axis=1, inplace=True)  # borramos las columnas inservibles
-    df.drop(["CRÉDITOS", "MONTO", "VENDEDOR"], axis=1, inplace=True)  # borramos las columnas inservibles
+    # Unimos bases
+    df = pd.concat([df, df2], axis=0)
 
     # Borramos clientes duplicados
     df.drop_duplicates(['Usuario'], keep='last', inplace=True)
@@ -56,7 +61,7 @@ def analysis():
 
     # Observaciones
     df['Observaciones'] = df['Observaciones'].astype(str)
-    df['Observaciones'] = df['Observaciones'].apply(lambda x: x.replace('nan', ''))
+    df['Observaciones'] = df['Observaciones'].apply(lambda x: x.replace('nan',''))
 
     # Días de vigencia
     fecha_hoy = datetime.datetime.now()
@@ -69,18 +74,16 @@ def analysis():
 
     for index, registro in df.iterrows():
         user = (df.at[index, "Usuario"])
-        buscador = True  # bandera (Verdadero = no encontrado, Falso = encontrado)
         for i, registro in df_usuarios.iterrows():
             if user == str(df_usuarios.at[i, "Usuario"]):
                 cliente = df_usuarios.at[i, "Cliente"]
                 cliente0 = cliente
                 cliente = string_cliente(cliente)
                 if cliente != "":
-                    df.at[index, "Cliente"] = cliente
-                    df.at[index, "Cliente0"] = cliente0
-                df.at[index, "Whpp"] = df_usuarios.at[i, "Whpp"]
-                df.at[index, "Plataforma"] = df_usuarios.at[i, "Plataforma"]
-                buscador = False
+                    df.at[index,"Cliente"] = cliente
+                    df.at[index,"Cliente0"] = cliente0
+                df.at[index,"Whpp"] = df_usuarios.at[i, "Whpp"]
+                df.at[index,"Plataforma"] = df_usuarios.at[i, "Plataforma"]
                 break
     return df
 
