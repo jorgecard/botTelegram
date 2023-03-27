@@ -119,6 +119,7 @@ def main():
     # on different commands - answer in Telegram
     dispatcher.add_handler(CommandHandler("start", start))
     dispatcher.add_handler(CommandHandler("vencer", por_vencer))
+    dispatcher.add_handler(CommandHandler("activos", activos))
     dispatcher.add_handler(CommandHandler("inactivos", vencidos))
     dispatcher.add_handler(CommandHandler("observaciones", observaciones))
 
