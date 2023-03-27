@@ -120,6 +120,34 @@ def por_vencer(n_days=10):
     # print(f"Telegram: {string}")
     return string, df_vencer
 
+def activos():
+    df = analysis()
+
+    fecha_hoy = datetime.datetime.now()
+    fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
+    fecha_hoy = pd.to_datetime(fecha_hoy)
+
+    mask = (df['Fecha exp'] >= fecha_hoy)
+    df_activos = df[mask]
+    df_activos.sort_values(by=['Días de vigencia'], ascending=True, inplace=True)
+
+    string = ""
+    for index, registro in df_activos.iterrows():
+        user = (df_activos.at[index, "Usuario"])
+        cliente = (df_activos.at[index, "Cliente"])
+        cliente0 = (df_activos.at[index, "Cliente0"])
+        whpp = df_activos.at[index, "Whpp"]
+        num = whpp.replace("wa.me/", "")
+        plataforma = df_activos.at[index, "Plataforma"]
+        días = str(df_activos.at[index, "Días de vigencia"])
+        días = días.replace('days 00:00:00', 'días')
+        observaciones = (df_activos.at[index, "Observaciones"])
+        if observaciones != "":
+            string = f"{string} \n \n Cliente: {cliente} - {cliente0}\n Plataforma: {plataforma} \n{días}\n{observaciones}"
+        else:
+            string = f"{string} \n \n Cliente: {cliente} - {cliente0}\n Plataforma: {plataforma} \n{días}"
+    # print(f"Telegram: {string}")
+    return string, df_activos
 
 def vencidos():
     df = analysis()
