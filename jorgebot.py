@@ -62,6 +62,11 @@ def por_vencer(update: Update, context: CallbackContext) -> None:
     mensaje_con_clientes, df = iptv.por_vencer()
     update.message.reply_text(mensaje_con_clientes)
     update.message.reply_text(tornar)
+    
+def activos(update: Update, context: CallbackContext) -> None:
+    mensaje_con_clientes, df = iptv.activos()
+    update.message.reply_text(mensaje_con_clientes)
+    update.message.reply_text(tornar)
 
 def vencidos(update: Update, context: CallbackContext) -> None:
     mensaje_con_clientes, df = iptv.vencidos()
