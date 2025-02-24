@@ -107,6 +107,10 @@ def por_vencer(n_days=10):
 
     print(f"Telegram: {string}")
     
+    # Check if string exceeds the maximum length for Telegram messages
+    if len(string) > 4096:
+        string = string[:4093] + "..."
+    
     return string, df_vencer
 
 def activos():
@@ -133,6 +137,11 @@ def activos():
         string += f"\n{''}"
 
     print(f"Telegram: {string}")
+    
+    # Check if string exceeds the maximum length for Telegram messages
+    if len(string) > 4096:
+        string = string[:4093] + "..."
+    
     return string, df_activos
 
 def vencidos():
@@ -145,7 +154,6 @@ def vencidos():
     mask = (df['Fecha exp'] < fecha_hoy)
     df_vencidos = df[mask].copy()
     df_vencidos = df_vencidos.sort_values(by=['Días de vigencia'], ascending=False, inplace=False)
-    df_vencidos = df_vencidos.head(15)
         
     # Construcción del mensaje
     string = ""
@@ -175,6 +183,10 @@ def vencidos():
         string += f"\n{whatsapp_link}"
 
     print(f"Telegram: {string}")
+    
+    # Check if string exceeds the maximum length for Telegram messages
+    if len(string) > 4096:
+        string = string[:4093] + "..."
     
     return string, df_vencidos
 
@@ -219,5 +231,9 @@ def observaciones():
         string += f"\n{whatsapp_link}"
 
     print(f"Telegram: {string}")
+    
+    # Check if string exceeds the maximum length for Telegram messages
+    if len(string) > 4096:
+        string = string[:4093] + "..."
     
     return string, df_observaciones
