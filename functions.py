@@ -109,110 +109,73 @@ def por_vencer(n_days=10):
     
     return string, df_vencer
 
-
-# def por_vencer(n_days=10):
-#     df = analysis()
-
-#     fecha_hoy = datetime.datetime.now()
-#     fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
-#     fecha_hoy = pd.to_datetime(fecha_hoy)
-
-#     mask = (df['Fecha exp'] >= fecha_hoy) & (df['Fecha exp'] <= (fecha_hoy + pd.Timedelta(days=n_days)))
-#     df_vencer = df[mask]
-#     df_vencer.sort_values(by=['Días de vigencia'], ascending=True, inplace=True)
-
-#     string = ""
-#     for index, row in df_vencer.iterrows():
-#         string = f"{string} \n \n{row['Cliente']}\n{row['Días de vigencia']}"
-#         if pd.notna(row['Observaciones']):
-#             string = f"{string}\n{row['Observaciones']}"
-#         else:
-#             pass
-#         # message = message = f"Buen día estimado/a {}, este mensaje es para recordarle que su usuario {} 
-#         # en la plataforma {} tiene {} días de vigencia. Agradecemos su gentil preferencia.".format(
-#         #     row['Cliente'], 
-#         #     row['Usuario'], 
-#         #     row['Plataforma'], 
-#         #     row['Días de vigencia']
-#         # )
-#         message = message = f"Buen día estimado/a {row['Cliente']}, este mensaje es para recordarle que su usuario {row['Usuario']} en la plataforma {row['Plataforma']} tiene {row['Días de vigencia']} días de vigencia. Agradecemos su gentil preferencia."
-#         message = message.replace(" ", "%20")
-#         message = message.replace("í", "%C3%AD")
-#         string = f"{string}\nhttps://api.whatsapp.com/send?phone={row['Whpp']}&text={message}"
-    
-#     # print(f"Telegram: {string}")
-#     return string, df_vencer
-
 def activos():
+    
     df = analysis()
 
-    fecha_hoy = datetime.datetime.now()
-    fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
-    fecha_hoy = pd.to_datetime(fecha_hoy)
+    # Obtener la fecha actual sin horas
+    fecha_hoy = pd.Timestamp.today().normalize()
 
     mask = (df['Fecha exp'] >= fecha_hoy)
-    df_activos = df[mask]
+    df_activos = df[mask].copy()
     df_activos.sort_values(by=['Días de vigencia'], ascending=True, inplace=True)
+    
+    # Construcción del mensaje
+    string = ""
+    for _, row in df_activos.iterrows():
+        # Información del cliente
+        string += f"\n\n{row['Cliente']}\n{row['Usuario']}\n{row['Días de vigencia']} días"
 
-    string = ""
-    for index, registro in df_activos.iterrows():
-        user = (df_activos.at[index, "Usuario"])
-        cliente = (df_activos.at[index, "Cliente"])
-        cliente0 = (df_activos.at[index, "Cliente0"])
-        whpp = df_activos.at[index, "Whpp"]
-        num = whpp.replace("wa.me/", "")
-        plataforma = df_activos.at[index, "Plataforma"]
-        días = str(df_activos.at[index, "Días de vigencia"])
-        días = días.replace('days 00:00:00', 'días')
-        observaciones = (df_activos.at[index, "Observaciones"])
-        if observaciones != "":
-            string = f"{string} \n \n Cliente: {cliente} - {cliente0}\n Plataforma: {plataforma} \n{días}\n{observaciones}"
-        else:
-            string = f"{string} \n \n Cliente: {cliente} - {cliente0}\n Plataforma: {plataforma} \n{días}"
-    
-    string = ""
-    for index, row in df_activos.iterrows():
-        string = f"{string} \n\nCliente: {row['Cliente']}\nusuario {row['Usuario']}\nDías: {row['Días de vigencia']}\nplataforma: {row['Plataforma']}"
+        # Agregar observaciones si existen
         if pd.notna(row['Observaciones']):
-            string = f"{string}\n{row['Observaciones']}"
-        else:
-            pass
-        string = f"{string}\n"
-    
-    # print(f"Telegram: {string}")
+            string += f"\n{row['Observaciones']}"
+
+        string += f"\n{''}"
+
+    print(f"Telegram: {string}")
     return string, df_activos
 
 def vencidos():
+    
     df = analysis()
 
-    fecha_hoy = datetime.datetime.now()
-    fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
-    fecha_hoy = pd.to_datetime(fecha_hoy)
+    # Obtener la fecha actual sin horas
+    fecha_hoy = pd.Timestamp.today().normalize()
 
     mask = (df['Fecha exp'] < fecha_hoy)
-    df_vencidos = df[mask]
+    df_vencidos = df[mask].copy()
     df_vencidos = df_vencidos.sort_values(by=['Días de vigencia'], ascending=False, inplace=False)
     df_vencidos = df_vencidos.head(15)
-
+        
+    # Construcción del mensaje
     string = ""
-    for index, registro in df_vencidos.iterrows():
-        user = (df_vencidos.at[index, "Usuario"])
-        cliente = (df_vencidos.at[index, "Cliente"])
-        cliente0 = (df_vencidos.at[index, "Cliente0"])
-        whpp = df_vencidos.at[index, "Whpp"]
-        whpp = str(whpp)
-        num = whpp                      # para que se borre el anterior
-        if whpp != "nan":
-            num = str(whpp.replace("wa.me/", ""))
-        plataforma = df_vencidos.at[index, "Plataforma"]
-        días = str(df_vencidos.at[index, "Días de vigencia"])
-        días = días.replace('days +00:00:00', 'días')
-        observaciones = (df_vencidos.at[index, "Observaciones"]) + "\n" +"num: " + num
-        mensaje = f"{cliente}, {plataforma}."
-        mensaje = mensaje.replace(" ", "%20")
-        mensaje = mensaje.replace("í", "%C3%AD")
-        string = f"{string} \n \n{cliente0}\n{días}\n{observaciones}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
-        df_vencidos
+    for _, row in df_vencidos.iterrows():
+        # Información del cliente
+        string += f"\n\n{row['Cliente']}\n{row['Usuario']}\n{row['Días de vigencia']} días"
+
+        # Agregar observaciones si existen
+        if pd.notna(row['Observaciones']):
+            string += f"\n{row['Observaciones']}"
+
+        # Mensaje para WhatsApp
+        message = (
+            f"Buen día estimado/a {row['Cliente']}, este mensaje es para recordarle que su usuario "
+            f"{row['Usuario']} en la plataforma {row['Plataforma']} tiene {row['Días de vigencia']} "
+            f"días de vigencia. Agradecemos su gentil preferencia."
+        )
+
+        # Formatear mensaje para URL de WhatsApp
+        message = (
+            message.replace(" ", "%20")
+            .replace("í", "%C3%AD")
+        )
+
+        # Enlace de WhatsApp
+        whatsapp_link = f"https://api.whatsapp.com/send?phone={row['Whpp']}&text={message}"
+        string += f"\n{whatsapp_link}"
+
+    print(f"Telegram: {string}")
+    
     return string, df_vencidos
 
 
@@ -220,30 +183,41 @@ def observaciones():
     
     df = analysis()
     
-    fecha_hoy = datetime.datetime.now()
-    fecha_hoy = fecha_hoy.date() + datetime.timedelta(days=0)
-    fecha_hoy = pd.to_datetime(fecha_hoy)
+    # Obtener la fecha actual sin horas
+    fecha_hoy = pd.Timestamp.today().normalize()
 
     mask = (df['Fecha exp'] >= fecha_hoy) & (df['Fecha exp'] <= (fecha_hoy + pd.Timedelta(days=100))) & (df['Observaciones'] != "")
-    df_observaciones=df[mask]
+    df_observaciones=df[mask].copy()
     df_observaciones = df_observaciones.sort_values(by=['Días de vigencia'], ascending=True, inplace=False)
     # df_observaciones
 
+    # Construcción del mensaje
     string = ""
-    for index, registro in df_observaciones.iterrows():
-        user = (df_observaciones.at[index, "Usuario"])
-        cliente = (df_observaciones.at[index, "Cliente"])
-        cliente0 = (df_observaciones.at[index, "Cliente0"])
-        whpp = df_observaciones.at[index, "Whpp"]
-        whpp = str(whpp)
-        if whpp != "nan":
-            num = str(whpp.replace("wa.me/", ""))
-        plataforma = df_observaciones.at[index, "Plataforma"]
-        días = str(df_observaciones.at[index, "Días de vigencia"])
-        días = días.replace('days 00:00:00','días')
-        observaciones = (df_observaciones.at[index, "Observaciones"])
-        mensaje = f"Buen día estimado usuario {cliente}, queríamos informarle que en {plataforma}."
-        mensaje = mensaje.replace(" ", "%20")
-        mensaje = mensaje.replace("í", "%C3%AD")
-        string = f"{string} \n \n{cliente0}\n{días}\n{observaciones}\nhttps://api.whatsapp.com/send?phone={num}&text={mensaje}"
+    for _, row in df_observaciones.iterrows():
+        # Información del cliente
+        string += f"\n\n{row['Cliente']}\n{row['Usuario']}\n{row['Días de vigencia']} días"
+
+        # Agregar observaciones si existen
+        if pd.notna(row['Observaciones']):
+            string += f"\n{row['Observaciones']}"
+
+        # Mensaje para WhatsApp
+        message = (
+            f"Buen día estimado/a {row['Cliente']}, este mensaje es para recordarle que su usuario "
+            f"{row['Usuario']} en la plataforma {row['Plataforma']} tiene {row['Días de vigencia']} "
+            f"días de vigencia. Agradecemos su gentil preferencia."
+        )
+
+        # Formatear mensaje para URL de WhatsApp
+        message = (
+            message.replace(" ", "%20")
+            .replace("í", "%C3%AD")
+        )
+
+        # Enlace de WhatsApp
+        whatsapp_link = f"https://api.whatsapp.com/send?phone={row['Whpp']}&text={message}"
+        string += f"\n{whatsapp_link}"
+
+    print(f"Telegram: {string}")
+    
     return string, df_observaciones
