@@ -21,7 +21,9 @@ bot.
 import logging
 import codecs
 
-import iptv_cuentas as iptv
+# Actualización de funciones 24/2/2025
+# import iptv_cuentas as iptv
+import functions as iptv
 
 from telegram import Update
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext
